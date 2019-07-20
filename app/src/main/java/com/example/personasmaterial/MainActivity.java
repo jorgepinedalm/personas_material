@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdaptadorPersona.OnPersonaClickListener {
 
     private RecyclerView lstOpciones;
     private Intent i;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         lstOpciones = findViewById(R.id.lstPersonas);
         personas = new ArrayList<>();
-        final AdaptadorPersona adapter = new AdaptadorPersona(personas);
+        final AdaptadorPersona adapter = new AdaptadorPersona(personas, this);
         llm = new LinearLayoutManager(this);
         llm.setOrientation(RecyclerView.VERTICAL);
         lstOpciones.setLayoutManager(llm);
@@ -73,4 +73,16 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onPersonaClick(Persona p) {
+        Intent i = new Intent(MainActivity.this, DetallePersona.class);
+        Bundle b = new Bundle();
+        b.putString("id", p.getId());
+        b.putString("nombre", p.getNombre());
+        b.putString("apellido", p.getApellido());
+        b.putInt("foto", p.getFoto());
+        i.putExtra("datos",b);
+        startActivity(i);
+        finish();
+    }
 }
